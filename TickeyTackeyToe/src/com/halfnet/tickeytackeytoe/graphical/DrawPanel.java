@@ -24,8 +24,7 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
 
     private static final BufferedImage BOARD_IMG_MAIN;
     private static final BufferedImage BOARD_IMG_SUB;
-    private static Font BIG = new Font("times new roman", 0, 300);
-    private static Font SMALL = new Font("times new roman", 0, 25);
+    private static final Font SMALL = new Font("times new roman", 0, 25);
 
     static {
         BOARD_IMG_MAIN = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
@@ -58,7 +57,6 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
         Graphics2D g = (Graphics2D) go;
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 1000, 800);
-        g.setFont(BIG);
         g.setStroke(new BasicStroke(7));
         g.setColor(Color.BLUE);
         for (int i = 0; i < 3; i++) {
@@ -71,14 +69,15 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
                         break;
                     case O:
                         g.drawOval(7 + i * 200, 7 + j * 200, 190, 190);
-                        break;}
-                    //case None:
-                        if (TilePosition.getByOrdinal(i * 3 + j) == this.game.getNextPlayPosition()) {
-                            g.setColor(Color.GREEN.brighter().brighter());
-                            g.fillRect(i * 200, j * 200, 200, 200);
-                            g.setColor(Color.BLUE);
-                        }
-                        g.drawImage(BOARD_IMG_SUB, null, i * 200, j * 200);
+                        break;
+                }
+                //case None:
+                if (TilePosition.getByOrdinal(i * 3 + j) == this.game.getNextPlayPosition()) {
+                    g.setColor(Color.GREEN.brighter().brighter());
+                    g.fillRect(i * 200, j * 200, 200, 200);
+                    g.setColor(Color.BLUE);
+                }
+                g.drawImage(BOARD_IMG_SUB, null, i * 200, j * 200);
                 //}
             }
         }

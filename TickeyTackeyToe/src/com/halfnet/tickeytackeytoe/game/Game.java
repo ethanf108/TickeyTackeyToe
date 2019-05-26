@@ -44,7 +44,7 @@ public class Game {
         if (this.nextPlayPosition != null) {
             throw new IllegalStateException("Cannot change next play position");
         }
-        if(this.getBoard().getByTilePosition(tp).getWinner().placed){
+        if (this.getBoard().getByTilePosition(tp).getWinner().placed) {
             throw new IllegalArgumentException("invalid next play position");
         }
         this.nextPlayPosition = tp;

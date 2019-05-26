@@ -42,9 +42,9 @@ public class AIGame implements GameButtonRelay {
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             ex.printStackTrace();
             this.mainWindow.throwError("Error while evaluating next move. Abort");
-        } catch (IllegalStateException ex){
+        } catch (IllegalStateException ex) {
             this.mainWindow.throwError("Cannot change next play tile");
-        } catch (IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             this.mainWindow.throwError("Invalid next play tile");
         }
     }
@@ -59,7 +59,7 @@ public class AIGame implements GameButtonRelay {
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             ex.printStackTrace();
             this.mainWindow.throwError("Error while evaluating next move. Abort");
-        } catch (IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             this.mainWindow.throwError("Piece move invalid");
         }
         if (!this.game.hasNextPlayPosition()) {

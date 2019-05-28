@@ -39,15 +39,16 @@ public class SubBoard {
     public Piece getPiece(TilePosition tp) {
         return this.getPiece(tp.ordinal());
     }
-    
+
     /**
      * useful to iterate through all pieces of a sub-board
+     *
      * @return a 2-D array representing the pieces of this sub-board
      */
-    public Piece[][] getPieces(){
+    public Piece[][] getPieces() {
         Piece[][] ret = new Piece[3][3];
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 ret[i][j] = this.state[i][j];
             }
         }
@@ -55,31 +56,6 @@ public class SubBoard {
     }
 
     public Piece getWinner() {
-
-        if (state[0][0] == state[0][1] && state[0][1] == state[0][2] && state[0][0].placed) {
-            return state[0][0];
-        }
-
-        if (state[1][0] == state[1][1] && state[1][1] == state[1][2] && state[1][0].placed) {
-            return state[1][0];
-        }
-
-        if (state[2][0] == state[2][1] && state[2][1] == state[2][2] && state[2][0].placed) {
-            return state[2][0];
-        }
-
-        if (state[0][0] == state[1][0] && state[1][0] == state[2][0] && state[0][0].placed) {
-            return state[0][0];
-        }
-
-        if (state[0][1] == state[1][0] && state[1][0] == state[2][0] && state[0][1].placed) {
-            return state[0][1];
-        }
-
-        if (state[0][2] == state[1][2] && state[1][2] == state[2][2] && state[0][2].placed) {
-            return state[0][2];
-        }
-        /*
         for (int i = 0; i < 3; i++) {
             if (state[i][0] == state[i][1] && state[i][1] == state[i][2] && state[i][0].placed) {
                 return state[i][0];
@@ -88,7 +64,6 @@ public class SubBoard {
                 return state[0][1];
             }
         }
-         */
         if (state[0][0] == state[1][1] && state[1][1] == state[2][2] && state[0][0].placed) {
             return state[0][0];
         }

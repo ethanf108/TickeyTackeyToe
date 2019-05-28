@@ -29,7 +29,7 @@ public class Game {
     public boolean hasNextPlayPosition() {
         return this.nextPlayPosition != null;
     }
-
+    
     void playPiece(TilePosition tp) {
         SubBoard sb = this.gameBoard.getByTilePosition(this.nextPlayPosition);
         if (sb.getPiece(tp).placed) {
@@ -37,7 +37,7 @@ public class Game {
         }
         sb.setPiece(tp, currentTurn);
         this.currentTurn = this.currentTurn.next();
-        this.nextPlayPosition = tp;
+        this.nextPlayPosition = this.getBoard().getByTilePosition(tp).getWinner().placed ? null : tp;
     }
 
     void setNextPlayPosition(TilePosition tp) {

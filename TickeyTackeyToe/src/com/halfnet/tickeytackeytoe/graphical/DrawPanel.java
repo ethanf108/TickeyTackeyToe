@@ -70,15 +70,14 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
                     case O:
                         g.drawOval(7 + i * 200, 7 + j * 200, 190, 190);
                         break;
+                    case None:
+                        if (TilePosition.getByOrdinal(i * 3 + j) == this.game.getNextPlayPosition()) {
+                            g.setColor(Color.GREEN.brighter().brighter());
+                            g.fillRect(i * 200, j * 200, 200, 200);
+                            g.setColor(Color.BLUE);
+                        }
+                        g.drawImage(BOARD_IMG_SUB, null, i * 200, j * 200);
                 }
-                //case None:
-                if (TilePosition.getByOrdinal(i * 3 + j) == this.game.getNextPlayPosition()) {
-                    g.setColor(Color.GREEN.brighter().brighter());
-                    g.fillRect(i * 200, j * 200, 200, 200);
-                    g.setColor(Color.BLUE);
-                }
-                g.drawImage(BOARD_IMG_SUB, null, i * 200, j * 200);
-                //}
             }
         }
         g.drawImage(BOARD_IMG_MAIN, null, 0, 0);
@@ -87,10 +86,15 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 Piece p = this.game.getBoard().getPieceByXY(i, j);
-                if (p.placed && (true || !this.game.getBoard().getByXY(i / 3, j / 3).getWinner().placed)) {
+                if (p.placed && !this.game.getBoard().getByXY(i / 3, j / 3).getWinner().placed) {
                     g.drawString(p.toString(), 25 + (600 / 9) * i, 40 + (600 / 9) * j);
                 }
             }
+        }
+        g.setColor(Color.BLACK);
+        Piece win = this.game.getBoard().getWinner();
+        if(win.placed){
+            g.drawString(win.toString() + " Won!", 10, 650);
         }
     }
 

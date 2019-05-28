@@ -30,6 +30,11 @@ public class Game {
         return this.nextPlayPosition != null;
     }
     
+    public boolean canMoveToPosition(TilePosition tp){
+        return !(this.getBoard().getByTilePosition(tp).getWinner().placed
+                || this.getBoard().getByTilePosition(tp).isCatsGame());
+    }
+
     void playPiece(TilePosition tp) {
         SubBoard sb = this.gameBoard.getByTilePosition(this.nextPlayPosition);
         if (sb.getPiece(tp).placed) {
@@ -37,14 +42,16 @@ public class Game {
         }
         sb.setPiece(tp, currentTurn);
         this.currentTurn = this.currentTurn.next();
-        this.nextPlayPosition = this.getBoard().getByTilePosition(tp).getWinner().placed ? null : tp;
+        this.nextPlayPosition = this.getBoard().getByTilePosition(tp).getWinner().placed
+                || this.getBoard().getByTilePosition(tp).isCatsGame() ? null : tp;
     }
 
     void setNextPlayPosition(TilePosition tp) {
         if (this.nextPlayPosition != null) {
             throw new IllegalStateException("Cannot change next play position");
         }
-        if (this.getBoard().getByTilePosition(tp).getWinner().placed) {
+        if (this.getBoard().getByTilePosition(tp).getWinner().placed
+                || this.getBoard().getByTilePosition(tp).isCatsGame()) {
             throw new IllegalArgumentException("invalid next play position");
         }
         this.nextPlayPosition = tp;

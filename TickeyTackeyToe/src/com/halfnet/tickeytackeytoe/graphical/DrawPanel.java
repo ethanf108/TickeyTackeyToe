@@ -95,6 +95,8 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
         Piece win = this.game.getBoard().getWinner();
         if(win.placed){
             g.drawString(win.toString() + " Won!", 10, 650);
+        } else if(game.getBoard().isCatsGame()){
+            g.drawString("Cat's game.", 10, 650);
         }
     }
 

@@ -39,6 +39,20 @@ public class SubBoard {
     public Piece getPiece(TilePosition tp) {
         return this.getPiece(tp.ordinal());
     }
+    
+    /**
+     * useful to iterate through all pieces of a sub-board
+     * @return a 2-D array representing the pieces of this sub-board
+     */
+    public Piece[][] getPieces(){
+        Piece[][] ret = new Piece[3][3];
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                ret[i][j] = this.state[i][j];
+            }
+        }
+        return ret;
+    }
 
     public Piece getWinner() {
 

@@ -34,33 +34,49 @@ public class AIGame implements GameButtonRelay {
     }
 
     private void setNextSubBoard() {
+        if (this.game.getBoard().isFilled()) {
+            return;
+        }
         FutureTask<TilePosition> ft = new FutureTask<>(() -> this.getCurrentSupplier().chooseNextSubBoard(this.game));
         try {
             ft.run();
             TilePosition tp = ft.get(MILLIS_TIMEOUT, TimeUnit.MILLISECONDS);
             this.game.setNextPlayPosition(tp);
-        } catch (InterruptedException | ExecutionException | TimeoutException ex) {
-            ex.printStackTrace();
+        } catch (InterruptedException | TimeoutException ex) {
+            ex.printStackTrace(System.err);
             this.mainWindow.throwError("Error while evaluating next move. Abort");
+        } catch (ExecutionException ex) {
+            ex.getCause().printStackTrace(System.err);
+            this.mainWindow.throwError("Exception code thrown by AI");
         } catch (IllegalStateException ex) {
             this.mainWindow.throwError("Cannot change next play tile");
         } catch (IllegalArgumentException ex) {
             this.mainWindow.throwError("Invalid next play tile");
+        } finally {
+            ft.cancel(true);
         }
     }
 
     @Override
     public synchronized void pressedNextButton() {
+        if (this.game.getBoard().isFilled()) {
+            return;
+        }
         FutureTask<TilePosition> ft = new FutureTask<>(() -> this.getCurrentSupplier().chooseNextPlay(this.game));
         try {
             ft.run();
             TilePosition tp = ft.get(MILLIS_TIMEOUT, TimeUnit.MILLISECONDS);
             this.game.playPiece(tp);
-        } catch (InterruptedException | ExecutionException | TimeoutException ex) {
-            ex.printStackTrace();
+        } catch (InterruptedException | TimeoutException ex) {
+            ex.printStackTrace(System.err);
             this.mainWindow.throwError("Error while evaluating next move. Abort");
+        } catch (ExecutionException ex) {
+            ex.getCause().printStackTrace(System.err);
+            this.mainWindow.throwError("Exception code thrown by AI");
         } catch (IllegalArgumentException ex) {
             this.mainWindow.throwError("Piece move invalid");
+        } finally {
+            ft.cancel(true);
         }
         if (!this.game.hasNextPlayPosition()) {
             this.setNextSubBoard();

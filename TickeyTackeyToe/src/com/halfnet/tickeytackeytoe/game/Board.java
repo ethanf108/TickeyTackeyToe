@@ -38,6 +38,15 @@ public class Board {
         return state;
     }
     
+    boolean isFilled(){
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(!this.getByPosition(i).getPiece(j).placed)return false;
+            }
+        }
+        return true;
+    }
+    
     public boolean isCatsGame(){
         return !getWinner().placed && Arrays.stream(this.genTempState()).flatMap(n->Arrays.stream(n)).allMatch(n->n.placed);
     }

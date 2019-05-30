@@ -1,7 +1,5 @@
 package com.halfnet.tickeytackeytoe.game;
 
-import java.util.Arrays;
-
 public class Board {
 
     private final SubBoard[][] boards = new SubBoard[3][3];
@@ -48,7 +46,15 @@ public class Board {
     }
     
     public boolean isCatsGame(){
-        return !getWinner().placed && Arrays.stream(this.genTempState()).flatMap(n->Arrays.stream(n)).allMatch(n->n.placed);
+        if(this.getWinner().placed){
+            return false;
+        }
+        for(SubBoard[] sba : this.boards){
+            for(SubBoard sb : sba){
+                if(!(sb.isCatsGame() || sb.getWinner().placed))return false;
+            }
+        }
+        return true;
     }
 
     public Piece getWinner() {

@@ -9,10 +9,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 final class DrawPanel extends JPanel implements MouseListener, MouseMotionListener {
@@ -21,6 +23,7 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
     private int mouseX, mouseY;
     private boolean mouseDown;
     private final GameButtonRelay gameButtonRelay;
+    private final JButton nextMove = new JButton("Next Move");
 
     private static final BufferedImage BOARD_IMG_MAIN;
     private static final BufferedImage BOARD_IMG_SUB;
@@ -48,8 +51,18 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
         this.game = g;
         this.gameButtonRelay = gbr;
         this.setPreferredSize(new Dimension(1000, 800));
+        this.add(this.nextMove);
+        this.setLayout(null);
+        this.nextMove.setBounds(10, 630, 100, 30);
+        this.revalidate();
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
+        this.nextMove.addActionListener(this::nextMoveClick);
+    }
+
+    public void nextMoveClick(ActionEvent e) {
+        this.gameButtonRelay.pressedNextButton();
+        this.repaint();
     }
 
     @Override
@@ -93,10 +106,12 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
         }
         g.setColor(Color.BLACK);
         Piece win = this.game.getBoard().getWinner();
-        if(win.placed){
-            g.drawString(win.toString() + " Won!", 10, 650);
-        } else if(game.getBoard().isCatsGame()){
-            g.drawString("Cat's game.", 10, 650);
+        if (win.placed) {
+            g.drawString(win.toString() + " Won!", 650, 50);
+        } else if (game.getBoard().isCatsGame()) {
+            g.drawString("Cat's game.", 650, 50);
+        } else {
+            g.drawString(this.game.getCurrentTurn() + "'s turn", 650, 50);
         }
     }
 
@@ -112,7 +127,6 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        this.gameButtonRelay.pressedNextButton();
         this.mouseDown = false;
         this.repaint();
     }

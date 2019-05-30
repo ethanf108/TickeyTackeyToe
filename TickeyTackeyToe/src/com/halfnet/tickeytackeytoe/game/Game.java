@@ -19,6 +19,9 @@ public class Game {
     }
 
     public SubBoard getCurrentSubBoard() {
+        if(this.nextPlayPosition == null){
+            throw new IllegalStateException("There is no current sub-board avaliable");
+        }
         return this.gameBoard.getByTilePosition(nextPlayPosition);
     }
 

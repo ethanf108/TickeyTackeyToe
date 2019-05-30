@@ -14,6 +14,8 @@ public class AIGame implements GameButtonRelay {
     private final Game game;
     private final CommandSupplier xSupplier;
     private final CommandSupplier oSupplier;
+    
+    private boolean gameEnd = false;
 
     private static final long MILLIS_TIMEOUT = 1000;
 
@@ -34,9 +36,6 @@ public class AIGame implements GameButtonRelay {
     }
 
     private void setNextSubBoard() {
-        if (this.game.getBoard().isFilled()) {
-            return;
-        }
         FutureTask<TilePosition> ft = new FutureTask<>(() -> this.getCurrentSupplier().chooseNextSubBoard(this.game));
         try {
             ft.run();
@@ -59,7 +58,7 @@ public class AIGame implements GameButtonRelay {
 
     @Override
     public synchronized void pressedNextButton() {
-        if (this.game.getBoard().isFilled()) {
+        if (this.gameEnd) {
             return;
         }
         FutureTask<TilePosition> ft = new FutureTask<>(() -> this.getCurrentSupplier().chooseNextPlay(this.game));
@@ -78,7 +77,9 @@ public class AIGame implements GameButtonRelay {
         } finally {
             ft.cancel(true);
         }
-        if (!this.game.hasNextPlayPosition()) {
+        if(this.game.getBoard().getWinner().placed || this.game.getBoard().isCatsGame()){
+            gameEnd = true;
+        }else if (!this.game.hasNextPlayPosition()) {
             this.setNextSubBoard();
         }
     }

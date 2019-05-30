@@ -1,7 +1,5 @@
 package com.halfnet.tickeytackeytoe.game;
 
-import java.util.Arrays;
-
 public class SubBoard {
 
     private final TilePosition position;
@@ -58,7 +56,12 @@ public class SubBoard {
     }
     
     public boolean isCatsGame(){
-        return !getWinner().placed && Arrays.stream(state).flatMap(n->Arrays.stream(n)).allMatch(n->n.placed);
+        for(Piece[] tp : state){
+            for(Piece p : tp){
+                if(!p.placed)return false;
+            }
+        }
+        return !getWinner().placed;
     }
 
     public Piece getWinner() {

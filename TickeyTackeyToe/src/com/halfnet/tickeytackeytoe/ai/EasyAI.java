@@ -15,7 +15,7 @@ public class EasyAI implements CommandSupplier {
                 return TilePosition.getByOrdinal(i);
             }
         }
-        throw new RuntimeException("bad");
+        throw new RuntimeException("Cannot choose next sub-board");
     }
 
     @Override
@@ -25,6 +25,6 @@ public class EasyAI implements CommandSupplier {
                 return TilePosition.getByOrdinal(i);
             }
         }
-        throw new RuntimeException("gay");
+        throw new RuntimeException("Cannot choose next play");
     }
 }

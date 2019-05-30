@@ -7,4 +7,6 @@ public interface GameButtonRelay {
     public void pressedXY(int x, int y);
     
     public String[] getInfoText();
+    
+    public void pressedFinishButton();
 }

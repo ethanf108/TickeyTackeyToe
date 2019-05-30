@@ -94,4 +94,11 @@ public class AIGame implements GameButtonRelay {
     @Override
     public void pressedXY(int x, int y) {
     }
+
+    @Override
+    public void pressedFinishButton() {
+        while(!gameEnd){
+            this.pressedNextButton();
+        }
+    }
 }

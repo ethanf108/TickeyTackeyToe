@@ -23,7 +23,9 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
     private int mouseX, mouseY;
     private boolean mouseDown;
     private final GameButtonRelay gameButtonRelay;
+    
     private final JButton nextMove = new JButton("Next Move");
+    private final JButton finishGame = new JButton("Finish Game");
 
     private static final BufferedImage BOARD_IMG_MAIN;
     private static final BufferedImage BOARD_IMG_SUB;
@@ -52,16 +54,24 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
         this.gameButtonRelay = gbr;
         this.setPreferredSize(new Dimension(1000, 800));
         this.add(this.nextMove);
+        this.add(this.finishGame);
         this.setLayout(null);
         this.nextMove.setBounds(10, 630, 100, 30);
+        this.finishGame.setBounds(120, 630, 100, 30);
         this.revalidate();
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
         this.nextMove.addActionListener(this::nextMoveClick);
+        this.finishGame.addActionListener(this::finishClick);
     }
 
     public void nextMoveClick(ActionEvent e) {
         this.gameButtonRelay.pressedNextButton();
+        this.repaint();
+    }
+
+    public void finishClick(ActionEvent e) {
+        this.gameButtonRelay.pressedFinishButton();
         this.repaint();
     }
 
@@ -108,8 +118,10 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
         Piece win = this.game.getBoard().getWinner();
         if (win.placed) {
             this.nextMove.setEnabled(false);
+            this.finishGame.setEnabled(false);
             g.drawString(win.toString() + " Won!", 650, 50);
         } else if (game.getBoard().isCatsGame()) {
+            this.finishGame.setEnabled(false);
             this.nextMove.setEnabled(false);
             g.drawString("Cat's game.", 650, 50);
         } else {

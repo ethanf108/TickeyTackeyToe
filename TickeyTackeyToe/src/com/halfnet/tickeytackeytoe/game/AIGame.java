@@ -34,6 +34,13 @@ public class AIGame implements GameButtonRelay {
             return this.oSupplier;
         }
     }
+    
+    @Override
+    public String[] getInfoText(){
+        return new String[]{
+            xSupplier.getClass().getSimpleName() + " vs " + oSupplier.getClass().getSimpleName()
+        };
+    }
 
     private void setNextSubBoard() {
         FutureTask<TilePosition> ft = new FutureTask<>(() -> this.getCurrentSupplier().chooseNextSubBoard(this.game));

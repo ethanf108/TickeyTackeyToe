@@ -5,7 +5,7 @@ import com.halfnet.tickeytackeytoe.game.Game;
 import com.halfnet.tickeytackeytoe.game.TilePosition;
 import java.util.Random;
 
-public class RandomAI implements CommandSupplier {
+class RandomAI implements CommandSupplier {
 
     private final Random rand = new Random();
 

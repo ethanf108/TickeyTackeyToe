@@ -107,11 +107,17 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
         g.setColor(Color.BLACK);
         Piece win = this.game.getBoard().getWinner();
         if (win.placed) {
+            this.nextMove.setEnabled(false);
             g.drawString(win.toString() + " Won!", 650, 50);
         } else if (game.getBoard().isCatsGame()) {
+            this.nextMove.setEnabled(false);
             g.drawString("Cat's game.", 650, 50);
         } else {
             g.drawString(this.game.getCurrentTurn() + "'s turn", 650, 50);
+        }
+        String[] gbrt = this.gameButtonRelay.getInfoText();
+        for (int i = 0; i < gbrt.length; i++) {
+            g.drawString(gbrt[i], 650, 100 + 50 * i);
         }
     }
 

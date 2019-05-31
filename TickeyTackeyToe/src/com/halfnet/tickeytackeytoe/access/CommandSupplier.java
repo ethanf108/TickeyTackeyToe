@@ -2,9 +2,12 @@ package com.halfnet.tickeytackeytoe.access;
 
 import com.halfnet.tickeytackeytoe.game.Game;
 import com.halfnet.tickeytackeytoe.game.TilePosition;
+import java.io.Serializable;
 
-public interface CommandSupplier {
+public interface CommandSupplier extends Serializable{
 
+    public static final long serialVersionUID = 1L;
+    
     /**
      * Only called if the player can pick the next sub-board to place in, for
      * example if they were chosen to play in the Top Left sub-board, but that

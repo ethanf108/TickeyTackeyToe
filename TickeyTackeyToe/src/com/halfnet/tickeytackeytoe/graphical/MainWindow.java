@@ -30,7 +30,7 @@ public final class MainWindow extends JFrame {
     }
 
     public void throwError(String message) {
-        System.out.println("ERROR: " + message);
+        System.err.println("ERROR: " + message);
         this.getContentPane().remove(this.drawPanel);
         this.getContentPane().add(new JLabel(message));
         this.getContentPane().revalidate();

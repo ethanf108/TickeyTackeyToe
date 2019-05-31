@@ -12,7 +12,7 @@ class RandomAI implements CommandSupplier {
     @Override
     public TilePosition chooseNextSubBoard(Game game) {
         TilePosition tp = TilePosition.getByOrdinal(rand.nextInt(9));
-        while (game.getBoard().getByTilePosition(tp).getWinner().placed) {
+        while (!game.canMoveToPosition(tp)) {
             tp = TilePosition.getByOrdinal(rand.nextInt(9));
         }
         return tp;

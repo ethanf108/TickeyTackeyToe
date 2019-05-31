@@ -1,5 +1,7 @@
 package com.halfnet.tickeytackeytoe.game;
 
+import java.util.ArrayList;
+
 public class SubBoard {
 
     private final TilePosition position;
@@ -38,6 +40,21 @@ public class SubBoard {
 
     public Piece getPiece(TilePosition tp) {
         return this.getPiece(tp.ordinal());
+    }
+    
+    /**
+     * Helper method, used to find all tiles that can be winners for a given piece
+     * @param p the piece to calculate winners for
+     * @return an array of TilePositions, may be empty
+     */
+    public TilePosition[] getPossibleWinners(Piece p){
+        ArrayList<TilePosition> ret = new ArrayList<>(9);
+        for(TilePosition tp : TilePosition.values()){
+            if(this.getPiece(tp).placed)continue;
+            state[tp.ordinal()/3][tp.ordinal()%3] = p;
+            if(getWinner() == p)ret.add(tp);
+        }
+        return ret.toArray(new TilePosition[ret.size()]);
     }
 
     /**

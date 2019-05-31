@@ -3,8 +3,10 @@ package com.halfnet.tickeytackeytoe.server;
 import com.halfnet.tickeytackeytoe.access.AIGame;
 import com.halfnet.tickeytackeytoe.access.CommandSupplier;
 import com.halfnet.tickeytackeytoe.game.Game;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -19,7 +21,7 @@ import java.util.concurrent.Future;
 
 public class Host {
 
-    private static final int SERVER_PORT = 34;
+    public static final int SERVER_PORT = 34;
     private static final int SERVER_TIMEOUT = 1000;
     private static final int MAX_RANK_LADDER_SIZE = 50;
     private static final int POOL_SIZE = Runtime.getRuntime().availableProcessors();
@@ -149,15 +151,22 @@ public class Host {
         Game g = new Game();
         System.out.println("Server started");
         while (this.isRunning) {
-            try (Socket sock = server.accept()) {
-                ObjectInputStream i = new ObjectInputStream(sock.getInputStream());
-                Object read = i.readObject();
+            try (
+                    Socket sock = server.accept();
+                    ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
+                    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+                    ) {
+                Object read = in.readObject();
                 if (!(read instanceof CommandSupplier)) {
+                    out.write(0);
+                    out.flush();
                     continue;
                 }
                 CommandSupplier cs = (CommandSupplier) read;
                 System.out.println("loaded: " + cs.getClass().getSimpleName());
                 pushCS(cs);
+                out.write(1);
+                out.flush();
             } catch (ClassNotFoundException ex) {
                 ex.printStackTrace(System.err);
             } catch (IOException ex) {

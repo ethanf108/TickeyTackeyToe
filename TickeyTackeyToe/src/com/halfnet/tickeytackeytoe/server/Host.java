@@ -75,6 +75,7 @@ public class Host {
                 }
             }
             synchronized (this.rankLadder) {
+                System.out.println("Recalculating...");
                 for (AIContainer a : this.rankLadder) {
                     a.score = 0;
                 }
@@ -124,11 +125,16 @@ public class Host {
                 }
                 Collections.sort(this.rankLadder, aiComp);
                 this.shouldRecalculate = false;
-                System.out.println("RECALC");
+                System.out.println("Recalculated");
                 for (AIContainer a : this.rankLadder) {
                     System.out.println(a.getName() + " " + a.score);
                 }
-                System.out.println(this.rankLadder.size());
+                System.out.println("Total AIs: " + this.rankLadder.size());
+                int count = 0;
+                for(; MAX_RANK_LADDER_SIZE > 0 && this.rankLadder.size() > MAX_RANK_LADDER_SIZE; count++){
+                    this.rankLadder.remove(this.rankLadder.size() - 1);
+                }
+                System.out.println("Scrubbed " + count + " entries from the Rank Ladder");
             }
         }
     }
@@ -143,7 +149,7 @@ public class Host {
                 }
             }
             if (!contains) {
-                this.rankLadder.add(new AIContainer((cs)));
+                this.rankLadder.add(new AIContainer(cs));
             }
             this.shouldRecalculate = true;
         }

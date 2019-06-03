@@ -34,6 +34,7 @@ public class Host {
     private final Thread listenThread;
     private final Thread recalcThread;
     private final List<AIContainer> rankLadder;
+    private ExecutorService execService;
 
     public Host() {
         this.listenThread = new Thread(this::listenLoop, "TickeyTackeyToe-Server-listen");
@@ -45,6 +46,7 @@ public class Host {
         if (this.server != null) {
             throw new IllegalStateException("Server already stopped");
         }
+        this.execService = Executors.newFixedThreadPool(POOL_SIZE);
         this.server = new ServerSocket(SERVER_PORT);
         server.setSoTimeout(SERVER_TIMEOUT);
         this.isRunning = true;
@@ -56,6 +58,7 @@ public class Host {
         if (!this.isRunning) {
             return;
         }
+        this.execService.shutdown();
         this.isRunning = false;
         this.listenThread.interrupt();
         this.recalcThread.interrupt();
@@ -75,7 +78,6 @@ public class Host {
                 for (AIContainer a : this.rankLadder) {
                     a.score = 0;
                 }
-                ExecutorService execService = Executors.newFixedThreadPool(POOL_SIZE);
                 ArrayList<Future<String>> fut = new ArrayList<>((this.rankLadder.size() * (this.rankLadder.size() + 1)) / 2);
                 for (int i = 0; i < this.rankLadder.size() - 1; i++) {
                     for (int j = i + 1; j < this.rankLadder.size(); j++) {

@@ -126,15 +126,15 @@ public class Host {
                 Collections.sort(this.rankLadder, aiComp);
                 this.shouldRecalculate = false;
                 System.out.println("Recalculated");
-                for (AIContainer a : this.rankLadder) {
-                    System.out.println(a.getName() + " " + a.score);
-                }
-                System.out.println("Total AIs: " + this.rankLadder.size());
                 int count = 0;
                 for(; MAX_RANK_LADDER_SIZE > 0 && this.rankLadder.size() > MAX_RANK_LADDER_SIZE; count++){
                     this.rankLadder.remove(this.rankLadder.size() - 1);
                 }
                 System.out.println("Scrubbed " + count + " entries from the Rank Ladder");
+                for (AIContainer a : this.rankLadder) {
+                    System.out.println(a.getName() + " " + a.score);
+                }
+                System.out.println("Total AIs: " + this.rankLadder.size());
             }
         }
     }

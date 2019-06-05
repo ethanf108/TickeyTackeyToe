@@ -10,7 +10,7 @@ public class SubBoard {
     public SubBoard(TilePosition tp) {
         this.position = tp;
         for (int i = 0; i < 9; i++) {
-            this.state[i / 3][i % 3] = Piece.None;
+            this.state[i % 3][i / 3] = Piece.None;
         }
     }
 
@@ -19,7 +19,7 @@ public class SubBoard {
     }
 
     void setPiece(int ord, Piece p) {
-        this.state[ord / 3][ord % 3] = p;
+        this.state[ord % 3][ord / 3] = p;
     }
 
     void setPiece(TilePosition tp, Piece p) {
@@ -34,8 +34,8 @@ public class SubBoard {
         return this.state[x][y];
     }
 
-    public Piece getPiece(int x) {
-        return this.state[x / 3][x % 3];
+    public Piece getPiece(int o) {
+        return this.state[o % 3][o / 3];
     }
 
     public Piece getPiece(TilePosition tp) {
@@ -51,7 +51,7 @@ public class SubBoard {
         ArrayList<TilePosition> ret = new ArrayList<>(9);
         for(TilePosition tp : TilePosition.values()){
             if(this.getPiece(tp).placed)continue;
-            state[tp.ordinal()/3][tp.ordinal()%3] = p;
+            state[tp.ordinal() % 3][tp.ordinal() / 3] = p;
             if(getWinner() == p)ret.add(tp);
         }
         return ret.toArray(new TilePosition[ret.size()]);

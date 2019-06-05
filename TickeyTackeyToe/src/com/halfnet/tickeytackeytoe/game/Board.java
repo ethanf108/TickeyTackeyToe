@@ -15,7 +15,7 @@ public class Board {
     }
 
     public SubBoard getByPosition(int p) {
-        return boards[p / 3][p % 3];
+        return boards[p % 3][p / 3];
     }
 
     public SubBoard getByTilePosition(TilePosition tp) {

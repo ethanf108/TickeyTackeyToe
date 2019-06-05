@@ -24,6 +24,8 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
     private boolean mouseDown;
     private final GameButtonRelay gameButtonRelay;
     
+    private int tileX = -1, tileY = -1;
+
     private final JButton nextMove = new JButton("Next Move");
     private final JButton finishGame = new JButton("Finish Game");
 
@@ -94,7 +96,7 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
                         g.drawOval(7 + i * 200, 7 + j * 200, 190, 190);
                         break;
                     case None:
-                        if (TilePosition.getByOrdinal(i * 3 + j) == this.game.getNextPlayPosition()) {
+                        if (TilePosition.getByOrdinal(j * 3 + i) == this.game.getNextPlayPosition()) {
                             g.setColor(Color.GREEN.brighter().brighter());
                             g.fillRect(i * 200, j * 200, 200, 200);
                             g.setColor(Color.BLUE);
@@ -108,6 +110,16 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
         g.setFont(SMALL);
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
+                    if (mouseX <= 600 && mouseY <= 600
+                            && mouseX > (600.0/9) * i && mouseX < (600.0/9) * (i + 1)
+                            && mouseY > (600.0/9) * j && mouseY < (600.0/9) * (j + 1)) {
+                        this.tileX = i;
+                        this.tileY = j;
+                        g.setColor(Color.LIGHT_GRAY);
+                        g.fillRect((600 / 9) * i + i, (600 / 9) * j + j,
+                                   (600 / 9) , (600 / 9));
+                        g.setColor(Color.BLUE);
+                    }
                 Piece p = this.game.getBoard().getPieceByXY(i, j);
                 if (p.placed && !this.game.getBoard().getByXY(i / 3, j / 3).getWinner().placed) {
                     g.drawString(p.toString(), 25 + (600 / 9) * i, 40 + (600 / 9) * j);
@@ -124,8 +136,10 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
             this.finishGame.setEnabled(false);
             this.nextMove.setEnabled(false);
             g.drawString("Cat's game.", 650, 50);
-        } else {
+        } else if(this.game.hasNextPlayPosition()){
             g.drawString(this.game.getCurrentTurn() + "'s turn", 650, 50);
+        } else {
+            g.drawString(this.game.getCurrentTurn() + ", select next play position", 650, 50);
         }
         String[] gbrt = this.gameButtonRelay.getInfoText();
         for (int i = 0; i < gbrt.length; i++) {
@@ -146,6 +160,9 @@ final class DrawPanel extends JPanel implements MouseListener, MouseMotionListen
     @Override
     public void mouseReleased(MouseEvent e) {
         this.mouseDown = false;
+        if(tileX > -1 && tileY > -1){
+            this.gameButtonRelay.pressedXY(tileX, tileY);
+        }
         this.repaint();
     }
 
